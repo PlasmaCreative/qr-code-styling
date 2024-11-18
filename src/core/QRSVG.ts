@@ -148,7 +148,7 @@ export default class QRSVG {
       let width = options.width;
 
       if (gradientOptions || color) {
-        const element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        const element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
         this._backgroundClipPath = this._window.document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
         this._backgroundClipPath.setAttribute("id", `clip-path-background-color-${this._instanceId}`);
         this._defs.appendChild(this._backgroundClipPath);
@@ -158,10 +158,15 @@ export default class QRSVG {
           element.setAttribute("rx", String((height / 2) * options.backgroundOptions.round));
         }
 
-        element.setAttribute("x", String(this._roundSize((options.width - width) / 2)));
-        element.setAttribute("y", String(this._roundSize((options.height - height) / 2)));
-        element.setAttribute("width", String(width));
-        element.setAttribute("height", String(height));
+        const bgPathX = String(this._roundSize((options.width - width) / 2));
+        const bgPathY = String(this._roundSize((options.height - height) / 2));
+
+        // element.setAttribute("x", String(this._roundSize((options.width - width) / 2)));
+        // element.setAttribute("y", String(this._roundSize((options.height - height) / 2)));
+        // element.setAttribute("width", String(width));
+        // element.setAttribute("height", String(height));
+
+        element.setAttribute("d", `M${bgPathX} ${bgPathY} h${String(width)} v${String(height)} h-${String(width)} Z`);
 
         this._backgroundClipPath.appendChild(element);
 
@@ -204,6 +209,7 @@ export default class QRSVG {
 
     this._dotsClipPath = this._window.document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
     this._dotsClipPath.setAttribute("id", `clip-path-dot-color-${this._instanceId}`);
+    this._dotsClipPath.setAttribute("class", `data-paths`);
     this._defs.appendChild(this._dotsClipPath);
 
     this._createColor({

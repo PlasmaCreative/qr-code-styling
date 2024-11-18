@@ -6,9 +6,27 @@ export interface UnknownObject {
   [key: string]: any;
 }
 
-export type DotType = "dots" | "rounded" | "classy" | "classy-rounded" | "square" | "extra-rounded";
-export type CornerDotType = "dot" | "square";
-export type CornerSquareType = "dot" | "square" | "extra-rounded";
+export type DotType =
+  | "dots"
+  | "random-dots"
+  | "rounded"
+  | "classy"
+  | "classy-rounded"
+  | "square"
+  | "extra-rounded"
+  | "gapped-square"
+  | "gapped-dots"
+  | "stars";
+export type CornerDotType = "circle" | "square" | "extra-rounded" | "rounded" | "classy" | "classy-rounded" | "star";
+export type CornerSquareType =
+  | "circle"
+  | "square"
+  | "square-thin"
+  | "extra-rounded"
+  | "rounded"
+  | "classy"
+  | "classy-rounded"
+  | "dots-light";
 export type FileExtension = "svg" | "png" | "jpeg" | "webp";
 export type GradientType = "radial" | "linear";
 export type DrawType = "canvas" | "svg";

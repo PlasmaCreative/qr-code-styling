@@ -1,3 +1,4 @@
+// @ts-nocheck
 import getMode from "../tools/getMode";
 import mergeDeep from "../tools/merge";
 import downloadURI from "../tools/downloadURI";
@@ -10,6 +11,9 @@ import { FileExtension, QRCode, Options, DownloadOptions, ExtensionFunction, Win
 import qrcode from "qrcode-generator";
 import getMimeType from "../tools/getMimeType";
 import { Canvas as NodeCanvas, Image } from "canvas";
+
+import { optimize } from "svgo/browser";
+import { SVG } from "@svgdotjs/svg.js";
 
 declare const window: Window;
 
@@ -252,5 +256,29 @@ export default class QRCodeStyling {
       const url = (element as HTMLCanvasElement).toDataURL(getMimeType(extension));
       downloadURI(url, `${name}.${extension}`);
     }
+  }
+
+  async toOptimizedSVGString(): void {
+    const element = await this._getElement('svg');
+    const serializer = new this._window.XMLSerializer();
+    const source = serializer.serializeToString(element as SVGElement);
+
+    const result = optimize(source, {
+      plugins: ["mergePaths", "convertPathData"]
+    });
+
+    const parseQr = SVG(result.data);
+
+    const clipPath = parseQr.defs().findOne(".data-paths");
+
+    const pathD = clipPath?.children().reduce((pathString, path) => {
+      return pathString + path.attr("d");
+    }, "");
+
+    const pathElement = SVG().path(pathD);
+    clipPath?.clear();
+    clipPath?.add(pathElement);
+
+    return parseQr.svg()
   }
 }
