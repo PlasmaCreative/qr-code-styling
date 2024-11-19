@@ -53,9 +53,9 @@ export default class QRSVG {
     this._element.setAttribute("width", String(options.width));
     this._element.setAttribute("height", String(options.height));
     this._element.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-    if (!options.dotsOptions.roundSize) {
-      this._element.setAttribute("shape-rendering", "crispEdges");
-    }
+    // if (!options.dotsOptions.roundSize) {
+    //   this._element.setAttribute("shape-rendering", "crispEdges");
+    // }
     this._element.setAttribute("viewBox", `0 0 ${options.width} ${options.height}`);
     this._defs = this._window.document.createElementNS("http://www.w3.org/2000/svg", "defs");
     this._element.appendChild(this._defs);
@@ -148,7 +148,7 @@ export default class QRSVG {
       let width = options.width;
 
       if (gradientOptions || color) {
-        const element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "rect");
         this._backgroundClipPath = this._window.document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
         this._backgroundClipPath.setAttribute("id", `clip-path-background-color-${this._instanceId}`);
         this._defs.appendChild(this._backgroundClipPath);
@@ -158,15 +158,15 @@ export default class QRSVG {
           element.setAttribute("rx", String((height / 2) * options.backgroundOptions.round));
         }
 
-        const bgPathX = String(this._roundSize((options.width - width) / 2));
-        const bgPathY = String(this._roundSize((options.height - height) / 2));
+        // const bgPathX = String(this._roundSize((options.width - width) / 2));
+        // const bgPathY = String(this._roundSize((options.height - height) / 2));
 
-        // element.setAttribute("x", String(this._roundSize((options.width - width) / 2)));
-        // element.setAttribute("y", String(this._roundSize((options.height - height) / 2)));
-        // element.setAttribute("width", String(width));
-        // element.setAttribute("height", String(height));
+        element.setAttribute("x", String(this._roundSize((options.width - width) / 2)));
+        element.setAttribute("y", String(this._roundSize((options.height - height) / 2)));
+        element.setAttribute("width", String(width));
+        element.setAttribute("height", String(height));
 
-        element.setAttribute("d", `M${bgPathX} ${bgPathY} h${String(width)} v${String(height)} h-${String(width)} Z`);
+        // element.setAttribute("d", `M${bgPathX} ${bgPathY} h${String(width)} v${String(height)} h-${String(width)} Z`);
 
         this._backgroundClipPath.appendChild(element);
 
