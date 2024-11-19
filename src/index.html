@@ -51,6 +51,7 @@
     dotOptions.forEach((dotOption, i) => {
       options["dotsOptions"] = { 
         ...options["dotsOptions"],
+        roundSize: false,
         type: dotOptions[i],
         color: colors[i],
         gradient: colors[i] == '' ? {
