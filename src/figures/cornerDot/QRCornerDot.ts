@@ -60,7 +60,7 @@ export default class QRCornerDot {
     const r = size / 2;
 
     this._rotateFigure({
-      ...args,
+      ...{ size, x, y },
       draw: () => {
         this._element = document.createElementNS("http://www.w3.org/2000/svg", "path");
         this._element.setAttribute(
@@ -75,7 +75,7 @@ export default class QRCornerDot {
     const { size, x, y } = args;
 
     this._rotateFigure({
-      ...args,
+      ...{ size, x, y },
       draw: () => {
         this._element = document.createElementNS("http://www.w3.org/2000/svg", "path");
         this._element.setAttribute("d", `M ${x} ${y} l 0 ${size} l ${size} 0 l 0 -${size} z`);

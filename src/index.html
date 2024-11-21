@@ -24,7 +24,7 @@
   <div id="container"></div>
   <script type="text/javascript">
     const dotOptions = [
-      "rounded", 
+      "rounded",
       "dots", 
       "classy", 
       "classy-rounded", "square", "extra-rounded", "gapped-square", "gapped-dots", "stars", "random-dots"
@@ -33,7 +33,13 @@
 
     const colors = ["#e8977d", "#d3e87d", "#7de88e", "#7ddbe8", "#867de8", "#e87de4", "#ee5253", "#576574", "#ff9f43", ""];
     const cornerDot = ['rounded', 'circle', 'classy', 'classy-rounded', 'square', 'extra-rounded', 'square', 'circle', "star", "rounded"];
-    const cornerSquare = ['rounded', 'circle', 'classy', 'classy-rounded', 'square', 'extra-rounded', 'square-thin' , 'dots-light', 'rounded', "rounded"];
+    const cornerSquare = [
+      'rounded',
+      'circle', 
+      'classy', 
+      'classy-rounded', 
+      'rounded', 
+      'extra-rounded', 'square-thin' , 'dots-light', 'rounded', "rounded"];
 
     let options = {
       width: 300,
@@ -45,6 +51,7 @@
         // hideBackgroundDots: false
       },
       type: 'svg',
+      
     };
 
 
@@ -79,20 +86,35 @@
       };
       options = {
         ...options,
-        image: i % 2 == 0 ? "/pc_icon.svg" : "/pc_logo.png",
+        image: i % 2 == 0 ? "/pc_icon.png" : "/pc_logo.png",
+        backgroundOptions: {
+          color: "transparent"
+        }
       }
 
       const qrCode = new QRCodeStyling(options);
       async function test(){
-        const svgString = await qrCode.toOptimizedSVGString();
+        const svgString = await qrCode.toSVGString();
         const span = document.createElement("span")
+
+
         span.innerHTML = svgString + `<div><br/>
           Dots: ${dotOptions[i]}<br/>
           Corner Square: ${cornerSquare[i]}<br/>
           Corner Dot: ${cornerDot[i]}<br/>
+          <button id="db_btn_${dotOptions[i]}">Download SVG</button>
         </div>`;
 
+        // qrCode.append(document.getElementById("container"));
+
         document.getElementById("container").appendChild(span);
+
+        document.getElementById(`db_btn_${dotOptions[i]}`).onclick = function () { 
+          qrCode.download({
+            name: dotOptions[i],
+            extension: 'svg'
+          });
+        };
       }
       test();
     });
