@@ -107,7 +107,7 @@ export default class QRSVG {
       });
     }
 
-    if(this._options?.backgroundOptions?.color) {
+    if(this._options?.backgroundOptions?.color != 'transparent') {
       this.drawBackground();
     }
 
