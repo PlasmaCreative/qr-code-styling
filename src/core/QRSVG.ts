@@ -107,7 +107,10 @@ export default class QRSVG {
       });
     }
 
-    this.drawBackground();
+    if(this._options?.backgroundOptions?.color) {
+      this.drawBackground();
+    }
+
     this.drawDots((row: number, col: number): boolean => {
       if (this._options.imageOptions.hideBackgroundDots) {
         if (
@@ -211,7 +214,6 @@ export default class QRSVG {
 
     this._dotsGroup = this._window.document.createElementNS("http://www.w3.org/2000/svg", "g");
     this._dotsGroup.setAttribute("fill", `url(#${elementId})`);
-    this._dotsGroup.setAttribute("class", `data-paths`);
     const dotsPath: SVGElement = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
     dotsPath.setAttribute("d", '')
 
