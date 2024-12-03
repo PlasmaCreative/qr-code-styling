@@ -82,7 +82,7 @@ export default class QRCornerSquare {
     const dotSize = size / 7;
 
     this._rotateFigure({
-      ...args,
+      ...{ size, x, y },
       draw: () => {
         this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
         this._element.setAttribute("clip-rule", "evenodd");

@@ -24,6 +24,7 @@
   <div id="container"></div>
   <script type="text/javascript">
     const dotOptions = [
+      "square",
       "rounded",
       "dots", 
       "classy", 
@@ -31,9 +32,10 @@
     ];
 
 
-    const colors = ["#e8977d", "#d3e87d", "#7de88e", "#7ddbe8", "#867de8", "#e87de4", "#ee5253", "#576574", "#ff9f43", ""];
-    const cornerDot = ['rounded', 'circle', 'classy', 'classy-rounded', 'square', 'extra-rounded', 'square', 'circle', "star", "rounded"];
+    const colors = ["", "#e8977d", "#d3e87d", "#7de88e", "#7ddbe8", "#867de8", "#e87de4", "#ee5253", "#576574", "#ff9f43", ""];
+    const cornerDot = ['square','rounded', 'circle', 'classy', 'classy-rounded', 'square', 'extra-rounded', 'square', 'circle', "star", "rounded"];
     const cornerSquare = [
+      'square',
       'rounded',
       'circle', 
       'classy', 
@@ -98,7 +100,8 @@
         const span = document.createElement("span")
 
 
-        span.innerHTML = svgString + `<div><br/>
+        span.innerHTML = svgString + `<div>
+          # ${i + 1}<br/>
           Dots: ${dotOptions[i]}<br/>
           Corner Square: ${cornerSquare[i]}<br/>
           Corner Dot: ${cornerDot[i]}<br/>
