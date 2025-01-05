@@ -134,6 +134,7 @@ export type Options = {
   margin?: number;
   data?: string;
   image?: string;
+  svgIcon?: string;
   nodeCanvas?: typeof nodeCanvas;
   jsdom?: typeof JSDOM;
   qrOptions?: {

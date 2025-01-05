@@ -44,6 +44,7 @@ export default class QRSVG {
   _options: RequiredOptions;
   _qr?: QRCode;
   _image?: HTMLImageElement | Image;
+  _svgIcon?: string;
   _imageUri?: string;
   _instanceId: number;
 
@@ -62,6 +63,7 @@ export default class QRSVG {
     this._imageUri = options.image;
     this._instanceId = QRSVG.instanceCount++;
     this._options = options;
+    this._svgIcon = options.svgIcon;
   }
 
   get width(): number {
@@ -89,6 +91,23 @@ export default class QRSVG {
     };
 
     this._qr = qr;
+
+
+    if (this._options.svgIcon && !this._options.image) {
+      this.loadSvgIcon();
+      const parsedSvg = SVG(this._svgIcon);
+
+      const { imageOptions, qrOptions } = this._options;
+      const coverLevel = imageOptions.imageSize * errorCorrectionPercents[qrOptions.errorCorrectionLevel];
+      const maxHiddenDots = Math.floor(coverLevel * count * count);
+      drawImageSize = calculateImageSize({
+        originalWidth: parsedSvg.attr('width'),
+        originalHeight: parsedSvg.attr('height'),
+        maxHiddenDots,
+        maxHiddenAxisDots: count - 14,
+        dotSize
+      });
+    }
 
     if (this._options.image) {
       //We need it to get image size
@@ -137,6 +156,10 @@ export default class QRSVG {
 
     if (this._options.image) {
       await this.drawImage({ width: drawImageSize.width, height: drawImageSize.height, count, dotSize });
+    }
+
+    if (this._options.svgIcon && !this._options.image) {
+     this.drawSvgIcon({ width: drawImageSize.width, height: drawImageSize.height, count, dotSize });
     }
   }
 
@@ -514,6 +537,43 @@ export default class QRSVG {
         image.src = options.image;
       }
     });
+  }
+
+  loadSvgIcon(): void {
+    if (!this._qr) {
+      throw "QR code is not defined";
+    }
+    const options = this._options;
+
+    this._svgIcon = options.svgIcon;
+  }
+
+  drawSvgIcon({
+    width,
+    height,
+    count,
+    dotSize
+  }: {
+    width: number;
+    height: number;
+    count: number;
+    dotSize: number;
+  }): void {
+    const options = this._options;
+    const xBeginning = this._roundSize((options.width - count * dotSize) / 2);
+    const yBeginning = this._roundSize((options.height - count * dotSize) / 2);
+    const dx = xBeginning + this._roundSize(options.imageOptions.margin + (count * dotSize - width) / 2);
+    const dy = yBeginning + this._roundSize(options.imageOptions.margin + (count * dotSize - height) / 2);
+    const dw = width - options.imageOptions.margin * 2;
+    const dh = height - options.imageOptions.margin * 2;
+
+    const iconDrawing = SVG(this._svgIcon);
+    iconDrawing.attr("x", String(dx))
+    iconDrawing.attr("y", String(dy))
+    iconDrawing.attr("width", `${dw}px`)
+    iconDrawing.attr("height", `${dh}px`)
+
+    this._element.appendChild(iconDrawing.node);
   }
 
   async drawImage({
